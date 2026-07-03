@@ -1,19 +1,21 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export function CTABand() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-20">
-      <div className="flex flex-col items-center gap-6 rounded-3xl border border-hairline bg-panel px-8 py-16 text-center">
-        <h2 className="max-w-xl font-display text-3xl font-semibold text-panel-foreground sm:text-4xl">
-          Stop waiting on agencies. Start shipping today.
+    <section className="mx-auto max-w-6xl px-6 pb-19">
+      <div className="rounded-[20px] bg-panel px-6 py-14 text-center sm:px-12">
+        <h2 className="mb-2.5 font-display text-[clamp(28px,3.4vw,38px)] font-semibold leading-[1.15] tracking-[-0.02em] text-white">
+          Your first change, shipped this week.
         </h2>
-        <p className="max-w-md text-panel-foreground/70">
-          Your developer is ready. Onboarding takes five minutes.
+        <p className="mb-7 text-[17px] text-[#9FAECB]">
+          Subscribe today and chat with your developer tomorrow.
         </p>
-        <Button asChild size="lg" className="bg-green text-white hover:bg-green/90">
-          <Link href="/signup?plan=build">Get started</Link>
-        </Button>
+        <Link
+          href="/signup?plan=build"
+          className="inline-block rounded-[10px] bg-green px-5 py-3 text-[15px] font-semibold text-[#06271A] transition hover:-translate-y-px hover:shadow-[0_8px_22px_rgba(15,169,104,0.35)]"
+        >
+          Start building — $500/mo
+        </Link>
       </div>
     </section>
   );

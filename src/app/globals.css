@@ -18,8 +18,13 @@
   --color-hairline: var(--hairline);
   --color-panel: var(--panel);
   --color-panel-foreground: var(--panel-foreground);
+  --color-panel-line: var(--panel-line);
+  --color-panel-text: var(--panel-text);
   --color-green: var(--green);
   --color-green-tint: var(--green-tint);
+
+  --animate-blink: blink 1s steps(1) infinite;
+  --animate-ship-pulse: ship-pulse 2s infinite;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -66,6 +71,8 @@
   --hairline: #E3E8F0;
   --panel: #0E1524;
   --panel-foreground: #FAFBFD;
+  --panel-line: #243049;
+  --panel-text: #C7D1E4;
   --green: #0FA968;
   --green-tint: #E2F6EC;
 
@@ -109,6 +116,8 @@
   --hairline: rgba(250, 251, 253, 0.12);
   --panel: #0E1524;
   --panel-foreground: #FAFBFD;
+  --panel-line: #243049;
+  --panel-text: #C7D1E4;
   --green: #17C77E;
   --green-tint: rgba(15, 169, 104, 0.16);
 
@@ -151,6 +160,34 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-sans;
+    @apply font-sans scroll-smooth;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes ship-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(15, 169, 104, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(15, 169, 104, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(15, 169, 104, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-blink,
+  .animate-ship-pulse {
+    animation: none;
   }
 }

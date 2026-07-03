@@ -1,52 +1,49 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-
 const FAQS = [
   {
-    q: "What counts as one request?",
-    a: "A request is one change, feature, or fix — e.g. \"add a pricing page\" or \"fix the mobile nav\". On Build, we work one active request at a time, but you can queue as many as you like.",
+    q: "What does “unlimited requests” actually mean?",
+    a: "Add as many requests to your queue as you like. Your developer works on one at a time, ships it, then picks up the next. Most requests ship within 48 hours; larger features are broken into shippable pieces so you see progress constantly.",
   },
   {
-    q: "Can I switch between Build and Maintain?",
-    a: "Yes, anytime from your billing settings. If you switch mid-cycle we prorate the difference.",
+    q: "Who owns the code?",
+    a: "You do — completely. The repository is yours from day one. If you ever leave, you take everything with you.",
   },
   {
-    q: "What if I'm on Maintain and need a new feature?",
-    a: "Maintain covers hosting, monitoring, security patches, and bug fixes only. New features require Build — you can upgrade with one click from the request form.",
+    q: "How is AI involved?",
+    a: "Your developer works with AI coding tools to move several times faster than a traditional agency. Every line is reviewed and tested by your developer before it ships. You get AI speed with human accountability.",
   },
   {
-    q: "Where does my project deploy?",
-    a: "Every project deploys to Vercel. You get a production URL, and every deploy shows up in your chat in real time.",
+    q: "What happens when I switch to Maintain?",
+    a: "Your product stays live, monitored, and patched for $100/month. Bug fixes are included; new features aren't. Whenever you want to build again, switch back to Build and your same developer picks up where you left off.",
   },
   {
-    q: "Do I own the code?",
-    a: "Yes. Your repository and production deployment are yours.",
+    q: "Can I really cancel anytime?",
+    a: "Yes. Plans are month to month with no minimum commitment. You keep the code and we'll help you migrate hosting if you want to leave entirely.",
   },
 ];
 
 export function FAQ() {
   return (
-    <section id="faq" className="border-y border-hairline bg-white/60 py-20">
-      <div className="mx-auto max-w-3xl px-6">
-        <h2 className="font-display text-3xl font-semibold text-ink sm:text-4xl">
-          Frequently asked questions
+    <section id="faq" className="mx-auto max-w-6xl scroll-mt-16 px-6 pb-19">
+      <div className="mb-8 max-w-[60ch]">
+        <h2 className="font-display text-[clamp(28px,3.4vw,38px)] font-semibold leading-[1.15] tracking-[-0.02em] text-ink">
+          Questions, answered
         </h2>
-        <Accordion type="single" collapsible className="mt-8">
-          {FAQS.map((item) => (
-            <AccordionItem key={item.q} value={item.q} className="border-hairline">
-              <AccordionTrigger className="text-left font-display text-base font-medium text-ink">
-                {item.q}
-              </AccordionTrigger>
-              <AccordionContent className="text-sm leading-relaxed text-muted-ink">
-                {item.a}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+      </div>
+      <div className="max-w-[760px]">
+        {FAQS.map((item) => (
+          <details key={item.q} className="group border-b border-hairline py-4.5">
+            <summary className="flex cursor-pointer list-none items-center justify-between text-[17px] font-semibold text-ink [&::-webkit-details-marker]:hidden">
+              {item.q}
+              <span className="font-mono text-xl text-muted-ink group-open:hidden">+</span>
+              <span className="hidden font-mono text-xl text-muted-ink group-open:inline">
+                –
+              </span>
+            </summary>
+            <p className="max-w-[64ch] pt-2.5 text-[15.5px] leading-relaxed text-muted-ink">
+              {item.a}
+            </p>
+          </details>
+        ))}
       </div>
     </section>
   );

@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const PLANS = [
@@ -8,77 +6,91 @@ const PLANS = [
     id: "build",
     name: "Build",
     price: "$500",
-    tagline: "Active development",
+    description: "Active development. Your dedicated developer + AI, shipping continuously.",
     features: [
-      "Unlimited requests, one active at a time",
+      "Unlimited requests, one at a time",
       "Direct chat with your developer",
-      "Deploys straight to Vercel",
-      "New features, redesigns, integrations",
+      "Average 48-hour turnaround",
+      "Deploys to production on Vercel",
+      "You own 100% of the code",
+      "Switch or cancel anytime",
     ],
+    cta: "Start building",
     featured: true,
   },
   {
     id: "maintain",
     name: "Maintain",
     price: "$100",
-    tagline: "Your product is done",
+    description: "Done building? Keep your product fast, secure, and online.",
     features: [
-      "Hosting & uptime monitoring",
-      "Security patches",
-      "Bug fixes",
-      "No new features — upgrade anytime",
+      "Hosting, monitoring & uptime",
+      "Security patches & updates",
+      "Bug fixes included",
+      "Priority re-activation to Build",
+      "Monthly health report",
     ],
+    cta: "Choose Maintain",
     featured: false,
   },
 ];
 
 export function Pricing() {
   return (
-    <section id="pricing" className="mx-auto max-w-6xl px-6 py-20">
-      <h2 className="font-display text-3xl font-semibold text-ink sm:text-4xl">
-        Simple, switchable pricing
-      </h2>
-      <p className="mt-2 max-w-lg text-muted-ink">
-        Two plans. Switch between them anytime as your product moves between building and
-        running.
-      </p>
-      <div className="mt-10 grid gap-6 md:grid-cols-2">
+    <section id="pricing" className="mx-auto max-w-6xl scroll-mt-16 px-6 py-19">
+      <div className="mb-11 max-w-[60ch]">
+        <h2 className="mb-3 font-display text-[clamp(28px,3.4vw,38px)] font-semibold leading-[1.15] tracking-[-0.02em] text-ink">
+          Two plans. Zero surprises.
+        </h2>
+        <p className="text-lg text-muted-ink">
+          Build while you&apos;re growing, maintain when you&apos;re done. Switch between
+          them anytime.
+        </p>
+      </div>
+      <div className="grid max-w-[880px] gap-5.5 md:grid-cols-2">
         {PLANS.map((plan) => (
           <div
             key={plan.id}
             className={cn(
-              "flex flex-col rounded-2xl border p-8",
+              "flex flex-col rounded-2xl bg-white p-8",
               plan.featured
-                ? "border-green/40 bg-green-tint"
-                : "border-hairline bg-white"
+                ? "border-[1.5px] border-ink shadow-[0_20px_50px_-28px_rgba(16,24,43,0.3)]"
+                : "border border-hairline"
             )}
           >
-            <span className="text-sm font-medium text-muted-ink">{plan.tagline}</span>
-            <div className="mt-2 flex items-baseline gap-1">
-              <span className="font-display text-4xl font-semibold text-ink">{plan.price}</span>
-              <span className="text-muted-ink">/month</span>
+            <div className="mb-3.5 font-mono text-[13px] uppercase tracking-[0.08em] text-muted-ink">
+              {plan.name}
             </div>
-            <h3 className="mt-1 font-display text-xl font-semibold text-ink">{plan.name}</h3>
-            <ul className="mt-6 flex flex-1 flex-col gap-3">
-              {plan.features.map((f) => (
-                <li key={f} className="flex items-start gap-2 text-sm text-ink">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-green" />
+            <div className="font-display text-[44px] font-bold leading-none tracking-[-0.03em] text-ink">
+              {plan.price}
+              <span className="font-body text-base font-medium text-muted-ink"> /month</span>
+            </div>
+            <p className="mb-5.5 mt-3 text-[15.5px] text-muted-ink">{plan.description}</p>
+            <ul className="mb-7 flex-1">
+              {plan.features.map((f, i) => (
+                <li
+                  key={f}
+                  className={cn(
+                    "flex items-baseline gap-2.5 py-2 text-[15px] text-ink",
+                    i < plan.features.length - 1 && "border-b border-hairline"
+                  )}
+                >
+                  <span className="font-semibold text-green">✓</span>
                   {f}
                 </li>
               ))}
             </ul>
-            <Button
-              asChild
-              size="lg"
+            <Link
+              href={`/signup?plan=${plan.id}`}
               className={cn(
-                "mt-8",
+                "rounded-[10px] px-5 py-3 text-center text-[15px] font-semibold transition hover:-translate-y-px",
                 plan.featured
-                  ? "bg-green text-white hover:bg-green/90"
-                  : "bg-ink text-white hover:bg-ink/90"
+                  ? "bg-ink text-white hover:shadow-[0_6px_18px_rgba(16,24,43,0.18)]"
+                  : "border-[1.5px] border-hairline text-ink hover:border-ink"
               )}
             >
-              <Link href={`/signup?plan=${plan.id}`}>Choose {plan.name}</Link>
-            </Button>
+              {plan.cta}
+            </Link>
           </div>
         ))}
       </div>
