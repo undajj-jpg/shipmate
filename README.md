@@ -6,7 +6,37 @@ chatting inside the platform and watching changes deploy to production on Vercel
 time.
 
 - **Build — $500/mo**: active development, unlimited requests (one active at a time), direct chat, deploys to Vercel.
-- **Maintain — $100/mo**: hosting/monitoring, security patches, bug fixes. No new features.
+- **Maintain — from $50/mo**: hosting/monitoring, security patches, bug fixes. No new
+  features. Priced by product type: landing page $50 · website $75 · automation $100 ·
+  SaaS $150 (see `src/lib/plans.ts`).
+
+Third-party infrastructure (hosting, database, domains, email, AI usage) is **not**
+included in either plan — it's passed through to clients at cost as itemized invoice
+lines (`passthrough_charges`).
+
+## Go-live checklist
+
+The app deploys with placeholder credentials; each integration comes alive when its real
+env vars are set (Vercel → Project → Settings → Environment Variables):
+
+1. **Database** — create a Supabase project, set `DATABASE_URL` (pooler URL), run
+   `npm run db:migrate`, optionally `npm run db:seed` for demo data. For realtime chat
+   also set `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
+   `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (chat falls back to
+   polling without the public pair).
+2. **Stripe** — set `STRIPE_SECRET_KEY`, run `npm run stripe:seed`, copy the five price
+   IDs into env; add a webhook endpoint for
+   `checkout.session.completed, customer.subscription.updated,
+   customer.subscription.deleted, invoice.payment_failed, invoice.paid` →
+   `STRIPE_WEBHOOK_SECRET`.
+3. **Auth** — set `NEXTAUTH_SECRET` (real random), `NEXTAUTH_URL` (prod URL), Google
+   OAuth client (`GOOGLE_CLIENT_ID/SECRET`, redirect URI
+   `<url>/api/auth/callback/google`).
+4. **Email** — `RESEND_API_KEY` with a verified sending domain (update the `from`
+   addresses in `src/auth.ts` and `src/lib/email.ts` to your domain).
+5. **Vercel** — `VERCEL_TOKEN`, `VERCEL_TEAM_ID`, then register the deployment webhook
+   (see below) → `VERCEL_WEBHOOK_SECRET`.
+6. Make yourself admin: `UPDATE users SET role='admin' WHERE email='<you>';`
 
 ## Tech stack
 

@@ -40,22 +40,37 @@ export async function completeOnboarding(formData: FormData) {
     where: eq(clients.userId, userId),
   });
 
-  const clientId =
-    existingClient?.id ??
-    (
-      await db
-        .insert(clients)
-        .values({ userId, companyName, plan: "none", planStatus: "canceled" })
-        .returning({ id: clients.id })
-    )[0].id;
+  let clientId: string;
+  if (existingClient) {
+    clientId = existingClient.id;
+    await db.update(clients).set({ companyName }).where(eq(clients.id, clientId));
+  } else {
+    [{ id: clientId }] = await db
+      .insert(clients)
+      .values({ userId, companyName, plan: "none", planStatus: "canceled" })
+      .returning({ id: clients.id });
+  }
 
-  await db.insert(projects).values({
-    clientId,
-    name: BUILD_TYPE_LABELS[buildType],
-    description,
-    buildType,
-    status: "onboarding",
+  // Re-submitting onboarding (back button, double click) must not create
+  // a second project — update the existing one instead.
+  const existingProject = await db.query.projects.findFirst({
+    where: eq(projects.clientId, clientId),
   });
+
+  if (existingProject) {
+    await db
+      .update(projects)
+      .set({ name: BUILD_TYPE_LABELS[buildType], description, buildType })
+      .where(eq(projects.id, existingProject.id));
+  } else {
+    await db.insert(projects).values({
+      clientId,
+      name: BUILD_TYPE_LABELS[buildType],
+      description,
+      buildType,
+      status: "onboarding",
+    });
+  }
 
   redirect(`/checkout?plan=${plan ?? "build"}`);
 }

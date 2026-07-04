@@ -1,6 +1,5 @@
 "use server";
 
-import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
