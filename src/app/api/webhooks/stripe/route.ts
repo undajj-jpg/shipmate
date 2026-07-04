@@ -3,6 +3,7 @@ import type Stripe from "stripe";
 import { db } from "@/db";
 import { clients, passthroughCharges, subscriptionEvents, type Client } from "@/db/schema";
 import { stripe, planFromPriceId } from "@/lib/stripe";
+import { notifyPaymentFailed } from "@/lib/email";
 import { env } from "@/env";
 
 export const runtime = "nodejs";
@@ -184,6 +185,8 @@ async function handlePaymentFailed(event: Stripe.Event) {
     .update(clients)
     .set({ planStatus: "past_due" })
     .where(eq(clients.id, client.id));
+
+  void notifyPaymentFailed(client.id).catch(() => {});
 }
 
 export async function POST(req: Request) {
