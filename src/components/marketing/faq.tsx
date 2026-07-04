@@ -12,6 +12,10 @@ const FAQS = [
     a: "Your developer works with AI coding tools to move several times faster than a traditional agency. Every line is reviewed and tested by your developer before it ships. You get AI speed with human accountability.",
   },
   {
+    q: "Are hosting and AI costs included?",
+    a: "Your subscription covers the development service. Infrastructure — Vercel hosting, database, domain, AI usage — is billed separately at cost, with no markup, because it varies with each product's traffic and usage. Typical small projects run $5–50/month. You see an itemized breakdown on every invoice and can check current usage anytime in your billing screen.",
+  },
+  {
     q: "What happens when I switch to Maintain?",
     a: "Your product stays live, monitored, and patched for $100/month. Bug fixes are included; new features aren't. Whenever you want to build again, switch back to Build and your same developer picks up where you left off.",
   },

@@ -87,6 +87,28 @@ time.
 
    Copy the `whsec_...` signing secret it prints into `STRIPE_WEBHOOK_SECRET`.
 
+3. Handled webhook events: `checkout.session.completed`,
+   `customer.subscription.updated`, `customer.subscription.deleted`,
+   `invoice.payment_failed`, and `invoice.paid` (marks infra pass-through
+   charges paid and recovers `past_due` clients). All events are logged to
+   `subscription_events` and deduped on the Stripe event ID.
+
+### Infrastructure pass-through charges
+
+Subscriptions cover the development service only. Hosting, database, domain,
+email, and AI usage costs are billed to clients **at cost** as separate
+invoice line items:
+
+- Staff record charges per client per month (`passthrough_charges` table) via
+  the admin back office; "Send to invoice" creates Stripe invoice items on the
+  client's next subscription invoice (idempotent per charge).
+- Clients see the itemized current-month charges and history in
+  **/app/billing → Infrastructure usage**.
+- Checkout requires accepting the variable-costs policy; acceptance timestamp
+  and terms version are stored on the `clients` row.
+- `INFRA_ALERT_THRESHOLD_CENTS` (default 10000 = $100) controls the admin
+  alert for unusually high monthly infra totals.
+
 ## Vercel integration (added in Phase 6)
 
 1. Create a Vercel API token (https://vercel.com/account/tokens) and set `VERCEL_TOKEN`

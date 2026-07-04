@@ -66,7 +66,7 @@ export function Pricing() {
               <span className="font-body text-base font-medium text-muted-ink"> /month</span>
             </div>
             <p className="mb-5.5 mt-3 text-[15.5px] text-muted-ink">{plan.description}</p>
-            <ul className="mb-7 flex-1">
+            <ul className="mb-4 flex-1">
               {plan.features.map((f, i) => (
                 <li
                   key={f}
@@ -80,6 +80,9 @@ export function Pricing() {
                 </li>
               ))}
             </ul>
+            <p className="mb-6 font-mono text-[12.5px] leading-relaxed text-muted-ink">
+              + hosting &amp; AI usage, billed at cost (typically $5–50/mo)
+            </p>
             <Link
               href={`/signup?plan=${plan.id}`}
               className={cn(

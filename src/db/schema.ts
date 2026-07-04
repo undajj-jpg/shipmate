@@ -40,6 +40,19 @@ export const deploymentStateEnum = pgEnum("deployment_state", [
   "error",
   "canceled",
 ]);
+export const passthroughCategoryEnum = pgEnum("passthrough_category", [
+  "hosting",
+  "ai_usage",
+  "domain",
+  "database",
+  "email",
+  "other",
+]);
+export const passthroughStatusEnum = pgEnum("passthrough_status", [
+  "pending",
+  "invoiced",
+  "paid",
+]);
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -107,6 +120,29 @@ export const clients = pgTable("clients", {
   assignedDeveloperId: uuid("assigned_developer_id").references(() => users.id, {
     onDelete: "set null",
   }),
+  termsAcceptedAt: timestamp("terms_accepted_at", { withTimezone: true }),
+  termsVersion: text("terms_version"),
+  costPolicyAcceptedAt: timestamp("cost_policy_accepted_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+/**
+ * Third-party infrastructure costs (hosting, AI usage, domains, …) passed
+ * through to clients at cost. Never covered by the subscription price.
+ */
+export const passthroughCharges = pgTable("passthrough_charges", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  clientId: uuid("client_id")
+    .notNull()
+    .references(() => clients.id, { onDelete: "cascade" }),
+  period: text("period").notNull(), // YYYY-MM
+  category: passthroughCategoryEnum("category").notNull(),
+  description: text("description").notNull(),
+  amountCents: integer("amount_cents").notNull(),
+  currency: text("currency").notNull().default("usd"),
+  stripeInvoiceItemId: text("stripe_invoice_item_id"),
+  status: passthroughStatusEnum("status").notNull().default("pending"),
+  createdBy: uuid("created_by").references(() => users.id, { onDelete: "set null" }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -207,6 +243,18 @@ export const clientsRelations = relations(clients, ({ one, many }) => ({
   }),
   projects: many(projects),
   subscriptionEvents: many(subscriptionEvents),
+  passthroughCharges: many(passthroughCharges),
+}));
+
+export const passthroughChargesRelations = relations(passthroughCharges, ({ one }) => ({
+  client: one(clients, {
+    fields: [passthroughCharges.clientId],
+    references: [clients.id],
+  }),
+  createdByUser: one(users, {
+    fields: [passthroughCharges.createdBy],
+    references: [users.id],
+  }),
 }));
 
 export const projectsRelations = relations(projects, ({ one, many }) => ({
@@ -258,3 +306,4 @@ export type Request = typeof requests.$inferSelect;
 export type Message = typeof messages.$inferSelect;
 export type Deployment = typeof deployments.$inferSelect;
 export type SubscriptionEvent = typeof subscriptionEvents.$inferSelect;
+export type PassthroughCharge = typeof passthroughCharges.$inferSelect;

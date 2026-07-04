@@ -24,6 +24,9 @@ const envSchema = z.object({
 
   RESEND_API_KEY: z.string().min(1, "RESEND_API_KEY is required"),
 
+  /** Alert admin when a client's monthly infra pass-through total exceeds this. */
+  INFRA_ALERT_THRESHOLD_CENTS: z.coerce.number().int().positive().default(10000),
+
   NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
 });
 
