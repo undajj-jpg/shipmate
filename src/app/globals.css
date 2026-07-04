@@ -22,9 +22,21 @@
   --color-panel-text: var(--panel-text);
   --color-green: var(--green);
   --color-green-tint: var(--green-tint);
+  --color-violet: var(--violet);
+  --color-violet-tint: var(--violet-tint);
+  --color-blue: var(--blue);
+  --color-blue-tint: var(--blue-tint);
+  --color-amber: var(--amber);
+  --color-amber-tint: var(--amber-tint);
+  --color-pink: var(--pink);
+  --color-pink-tint: var(--pink-tint);
 
   --animate-blink: blink 1s steps(1) infinite;
   --animate-ship-pulse: ship-pulse 2s infinite;
+  --animate-float: float 9s ease-in-out infinite;
+  --animate-float-slow: float 14s ease-in-out infinite;
+  --animate-gradient: gradient-shift 8s ease infinite;
+  --animate-shimmer: shimmer 2.5s linear infinite;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -75,6 +87,14 @@
   --panel-text: #C7D1E4;
   --green: #0FA968;
   --green-tint: #E2F6EC;
+  --violet: #6D5CE7;
+  --violet-tint: #ECE9FC;
+  --blue: #2F6BFF;
+  --blue-tint: #E6EEFF;
+  --amber: #F5960A;
+  --amber-tint: #FDEFD6;
+  --pink: #E8437F;
+  --pink-tint: #FCE3ED;
 
   --card: #ffffff;
   --card-foreground: #10182B;
@@ -182,12 +202,83 @@
   }
 }
 
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(3%, -4%) scale(1.06);
+  }
+  66% {
+    transform: translate(-3%, 3%) scale(0.96);
+  }
+}
+
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Gradient text helper */
+.text-gradient {
+  background-image: linear-gradient(
+    100deg,
+    var(--green) 0%,
+    var(--blue) 45%,
+    var(--violet) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Scroll-reveal: hidden until .is-visible is added by IntersectionObserver */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
   .animate-blink,
-  .animate-ship-pulse {
+  .animate-ship-pulse,
+  .animate-float,
+  .animate-float-slow,
+  .animate-gradient,
+  .animate-shimmer {
     animation: none;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

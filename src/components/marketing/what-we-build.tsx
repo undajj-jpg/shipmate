@@ -1,5 +1,7 @@
 import type React from "react";
 import { BUILD_PRICE_CENTS, MAINTAIN_PRICE_CENTS, money, type BuildType } from "@/lib/plans";
+import { Reveal } from "@/components/marketing/reveal";
+import { cn } from "@/lib/utils";
 
 function WebsiteWire() {
   return (
@@ -86,6 +88,8 @@ const CATEGORIES: {
   body: string;
   wire: () => React.ReactElement;
   buildType: BuildType;
+  chip: string;
+  glow: string;
 }[] = [
   {
     tag: "web",
@@ -93,6 +97,8 @@ const CATEGORIES: {
     body: "Fast, modern sites with CMS, SEO, and analytics baked in.",
     wire: WebsiteWire,
     buildType: "site",
+    chip: "bg-green-tint text-green",
+    glow: "hover:shadow-[0_18px_40px_-18px_rgba(15,169,104,0.45)] hover:border-green/40",
   },
   {
     tag: "launch",
@@ -100,6 +106,8 @@ const CATEGORIES: {
     body: "Conversion-focused pages, shipped in days, iterated weekly.",
     wire: LandingWire,
     buildType: "landing_page",
+    chip: "bg-blue-tint text-blue",
+    glow: "hover:shadow-[0_18px_40px_-18px_rgba(47,107,255,0.45)] hover:border-blue/40",
   },
   {
     tag: "product",
@@ -107,6 +115,8 @@ const CATEGORIES: {
     body: "Auth, billing, dashboards — a real product, not a prototype.",
     wire: SaasWire,
     buildType: "saas",
+    chip: "bg-violet-tint text-violet",
+    glow: "hover:shadow-[0_18px_40px_-18px_rgba(109,92,231,0.45)] hover:border-violet/40",
   },
   {
     tag: "ops",
@@ -114,6 +124,8 @@ const CATEGORIES: {
     body: "Connect your tools and remove the manual work from your week.",
     wire: AutomationWire,
     buildType: "automation",
+    chip: "bg-amber-tint text-amber",
+    glow: "hover:shadow-[0_18px_40px_-18px_rgba(245,150,10,0.45)] hover:border-amber/40",
   },
 ];
 
@@ -130,14 +142,23 @@ export function WhatWeBuild() {
         </p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {CATEGORIES.map((c) => (
-          <div
+        {CATEGORIES.map((c, i) => (
+          <Reveal
             key={c.tag}
-            className="group rounded-[14px] border border-hairline bg-white p-4 transition duration-200 hover:-translate-y-0.5 hover:border-ink/30 hover:shadow-[0_12px_32px_-16px_rgba(16,24,43,0.18)]"
+            delay={i * 90}
+            className={cn(
+              "group rounded-[14px] border border-hairline bg-white p-4 transition duration-200 hover:-translate-y-1",
+              c.glow
+            )}
           >
             <c.wire />
             <div className="p-1.5 pt-4">
-              <span className="mb-2.5 inline-block rounded-md bg-green-tint px-2 py-[3px] font-mono text-[11px] text-green">
+              <span
+                className={cn(
+                  "mb-2.5 inline-block rounded-md px-2 py-[3px] font-mono text-[11px]",
+                  c.chip
+                )}
+              >
                 {c.tag}
               </span>
               <h3 className="mb-1.5 font-display text-lg font-semibold text-ink">
@@ -157,7 +178,7 @@ export function WhatWeBuild() {
                 </div>
               </div>
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

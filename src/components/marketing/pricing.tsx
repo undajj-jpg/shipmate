@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Reveal } from "@/components/marketing/reveal";
 
 const PLANS = [
   {
@@ -56,16 +57,28 @@ export function Pricing() {
         </p>
       </div>
       <div className="grid max-w-[880px] gap-5.5 md:grid-cols-2">
-        {PLANS.map((plan) => (
-          <div
+        {PLANS.map((plan, i) => (
+          <Reveal
             key={plan.id}
+            delay={i * 110}
             className={cn(
-              "flex flex-col rounded-2xl bg-white p-8",
+              "relative flex flex-col overflow-hidden rounded-2xl bg-white p-8 transition duration-200 hover:-translate-y-1",
               plan.featured
-                ? "border-[1.5px] border-ink shadow-[0_20px_50px_-28px_rgba(16,24,43,0.3)]"
-                : "border border-hairline"
+                ? "border-[1.5px] border-ink shadow-[0_20px_50px_-28px_rgba(16,24,43,0.35)]"
+                : "border border-hairline hover:border-ink/30"
             )}
           >
+            {plan.featured && (
+              <>
+                <span className="absolute right-5 top-5 rounded-full bg-gradient-to-r from-green to-blue px-2.5 py-1 font-mono text-[10.5px] font-semibold text-white">
+                  most popular
+                </span>
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gradient-to-br from-green/30 to-blue/20 blur-2xl"
+                />
+              </>
+            )}
             <div className="mb-3.5 font-mono text-[13px] uppercase tracking-[0.08em] text-muted-ink">
               {plan.name}
             </div>
@@ -112,7 +125,7 @@ export function Pricing() {
             >
               {plan.cta}
             </Link>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>
