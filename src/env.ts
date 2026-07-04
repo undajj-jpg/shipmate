@@ -16,7 +16,15 @@ const envSchema = z.object({
   STRIPE_SECRET_KEY: z.string().min(1, "STRIPE_SECRET_KEY is required"),
   STRIPE_WEBHOOK_SECRET: z.string().min(1, "STRIPE_WEBHOOK_SECRET is required"),
   STRIPE_PRICE_BUILD: z.string().min(1, "STRIPE_PRICE_BUILD is required"),
-  STRIPE_PRICE_MAINTAIN: z.string().min(1, "STRIPE_PRICE_MAINTAIN is required"),
+  // Maintain is tiered by build type — one Stripe price per tier.
+  STRIPE_PRICE_MAINTAIN_SITE: z.string().min(1, "STRIPE_PRICE_MAINTAIN_SITE is required"),
+  STRIPE_PRICE_MAINTAIN_LANDING: z
+    .string()
+    .min(1, "STRIPE_PRICE_MAINTAIN_LANDING is required"),
+  STRIPE_PRICE_MAINTAIN_SAAS: z.string().min(1, "STRIPE_PRICE_MAINTAIN_SAAS is required"),
+  STRIPE_PRICE_MAINTAIN_AUTOMATION: z
+    .string()
+    .min(1, "STRIPE_PRICE_MAINTAIN_AUTOMATION is required"),
 
   VERCEL_TOKEN: z.string().min(1, "VERCEL_TOKEN is required"),
   VERCEL_TEAM_ID: z.string().min(1, "VERCEL_TEAM_ID is required"),
@@ -28,6 +36,11 @@ const envSchema = z.object({
   INFRA_ALERT_THRESHOLD_CENTS: z.coerce.number().int().positive().default(10000),
 
   NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
+
+  // Client-side Supabase Realtime (chat). Optional: chat falls back to
+  // polling when not configured (e.g. local dev without Supabase).
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;

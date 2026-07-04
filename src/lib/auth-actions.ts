@@ -1,6 +1,10 @@
 "use server";
 
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
+
+export async function signOutAction() {
+  await signOut({ redirectTo: "/" });
+}
 
 export async function emailSignIn(formData: FormData) {
   const email = formData.get("email");

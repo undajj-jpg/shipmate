@@ -1,3 +1,6 @@
+import type React from "react";
+import { BUILD_PRICE_CENTS, MAINTAIN_PRICE_CENTS, money, type BuildType } from "@/lib/plans";
+
 function WebsiteWire() {
   return (
     <div className="h-28 overflow-hidden rounded-lg border border-hairline bg-[#F4F6FA]">
@@ -77,30 +80,40 @@ function AutomationWire() {
   );
 }
 
-const CATEGORIES = [
+const CATEGORIES: {
+  tag: string;
+  title: string;
+  body: string;
+  wire: () => React.ReactElement;
+  buildType: BuildType;
+}[] = [
   {
     tag: "web",
     title: "Websites",
     body: "Fast, modern sites with CMS, SEO, and analytics baked in.",
     wire: WebsiteWire,
+    buildType: "site",
   },
   {
     tag: "launch",
     title: "Landing pages",
     body: "Conversion-focused pages, shipped in days, iterated weekly.",
     wire: LandingWire,
+    buildType: "landing_page",
   },
   {
     tag: "product",
     title: "SaaS apps",
     body: "Auth, billing, dashboards — a real product, not a prototype.",
     wire: SaasWire,
+    buildType: "saas",
   },
   {
     tag: "ops",
     title: "Automations",
     body: "Connect your tools and remove the manual work from your week.",
     wire: AutomationWire,
+    buildType: "automation",
   },
 ];
 
@@ -130,7 +143,19 @@ export function WhatWeBuild() {
               <h3 className="mb-1.5 font-display text-lg font-semibold text-ink">
                 {c.title}
               </h3>
-              <p className="text-[14.5px] leading-relaxed text-muted-ink">{c.body}</p>
+              <p className="mb-3 text-[14.5px] leading-relaxed text-muted-ink">{c.body}</p>
+              <div className="border-t border-hairline pt-3 font-mono text-[11.5px] leading-relaxed text-muted-ink">
+                <div className="flex justify-between">
+                  <span>Build</span>
+                  <span className="text-ink">{money(BUILD_PRICE_CENTS)}/mo</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Maintain</span>
+                  <span className="text-ink">
+                    {money(MAINTAIN_PRICE_CENTS[c.buildType])}/mo
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         ))}

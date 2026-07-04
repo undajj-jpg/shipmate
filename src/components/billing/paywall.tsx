@@ -1,5 +1,13 @@
-import { startCheckout, openBillingPortal } from "@/lib/billing-actions";
-import { PLAN_DETAILS, type PaidPlan } from "@/lib/stripe";
+import Link from "next/link";
+import { openBillingPortal } from "@/lib/billing-actions";
+import {
+  PLAN_COPY,
+  BUILD_TYPE_LABELS,
+  money,
+  planPriceCents,
+  type BuildType,
+  type PaidPlan,
+} from "@/lib/plans";
 import type { Client } from "@/db/schema";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +24,7 @@ const PLAN_FEATURES: Record<PaidPlan, string[]> = {
   ],
 };
 
-export function Paywall({ client }: { client: Client }) {
+export function Paywall({ client, buildType }: { client: Client; buildType: BuildType }) {
   const pastDue = client.planStatus === "past_due";
 
   return (
@@ -46,8 +54,8 @@ export function Paywall({ client }: { client: Client }) {
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
-            {(Object.keys(PLAN_DETAILS) as PaidPlan[]).map((plan) => {
-              const details = PLAN_DETAILS[plan];
+            {(["build", "maintain"] as PaidPlan[]).map((plan) => {
+              const copy = PLAN_COPY[plan];
               const featured = plan === "build";
               return (
                 <div
@@ -60,16 +68,21 @@ export function Paywall({ client }: { client: Client }) {
                   )}
                 >
                   <div className="mb-2 font-mono text-[13px] uppercase tracking-[0.08em] text-muted-ink">
-                    {details.name}
+                    {copy.name}
                   </div>
-                  <div className="mb-4 font-display text-3xl font-bold tracking-[-0.03em] text-ink">
-                    {details.amountLabel.split("/")[0]}
+                  <div className="mb-1 font-display text-3xl font-bold tracking-[-0.03em] text-ink">
+                    {money(planPriceCents(plan, buildType))}
                     <span className="font-body text-sm font-medium text-muted-ink">
                       {" "}
                       /month
                     </span>
                   </div>
-                  <ul className="mb-6 flex-1 space-y-2 text-sm text-ink">
+                  {plan === "maintain" && (
+                    <p className="mb-3 font-mono text-[11.5px] text-muted-ink">
+                      rate for a {BUILD_TYPE_LABELS[buildType].toLowerCase()}
+                    </p>
+                  )}
+                  <ul className="mb-6 mt-2 flex-1 space-y-2 text-sm text-ink">
                     {PLAN_FEATURES[plan].map((f) => (
                       <li key={f} className="flex items-baseline gap-2">
                         <span className="font-semibold text-green">✓</span>
@@ -77,20 +90,17 @@ export function Paywall({ client }: { client: Client }) {
                       </li>
                     ))}
                   </ul>
-                  <form action={startCheckout}>
-                    <input type="hidden" name="plan" value={plan} />
-                    <button
-                      type="submit"
-                      className={cn(
-                        "w-full rounded-[10px] px-5 py-2.5 text-[15px] font-semibold transition hover:-translate-y-px",
-                        featured
-                          ? "bg-ink text-white hover:shadow-[0_6px_18px_rgba(16,24,43,0.18)]"
-                          : "border-[1.5px] border-hairline text-ink hover:border-ink"
-                      )}
-                    >
-                      Choose {details.name}
-                    </button>
-                  </form>
+                  <Link
+                    href={`/checkout?plan=${plan}`}
+                    className={cn(
+                      "w-full rounded-[10px] px-5 py-2.5 text-center text-[15px] font-semibold transition hover:-translate-y-px",
+                      featured
+                        ? "bg-ink text-white hover:shadow-[0_6px_18px_rgba(16,24,43,0.18)]"
+                        : "border-[1.5px] border-hairline text-ink hover:border-ink"
+                    )}
+                  >
+                    Choose {copy.name}
+                  </Link>
                 </div>
               );
             })}

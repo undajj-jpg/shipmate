@@ -18,6 +18,9 @@ const key = z
 
 const stripe = new Stripe(key, { typescript: true });
 
+const MAINTAIN_DESCRIPTION =
+  "Keep a finished product healthy: hosting and monitoring, security patches, and bug fixes. No new features. Priced by product type.";
+
 const PLANS = [
   {
     lookupKey: "shipmate_build",
@@ -28,12 +31,32 @@ const PLANS = [
     envVar: "STRIPE_PRICE_BUILD",
   },
   {
-    lookupKey: "shipmate_maintain",
-    name: "Shipmate Maintain",
-    description:
-      "Keep a finished product healthy: hosting and monitoring, security patches, and bug fixes. No new features.",
+    lookupKey: "shipmate_maintain_landing",
+    name: "Shipmate Maintain — Landing page",
+    description: MAINTAIN_DESCRIPTION,
+    unitAmount: 5000,
+    envVar: "STRIPE_PRICE_MAINTAIN_LANDING",
+  },
+  {
+    lookupKey: "shipmate_maintain_site",
+    name: "Shipmate Maintain — Website",
+    description: MAINTAIN_DESCRIPTION,
+    unitAmount: 7500,
+    envVar: "STRIPE_PRICE_MAINTAIN_SITE",
+  },
+  {
+    lookupKey: "shipmate_maintain_automation",
+    name: "Shipmate Maintain — Automation",
+    description: MAINTAIN_DESCRIPTION,
     unitAmount: 10000,
-    envVar: "STRIPE_PRICE_MAINTAIN",
+    envVar: "STRIPE_PRICE_MAINTAIN_AUTOMATION",
+  },
+  {
+    lookupKey: "shipmate_maintain_saas",
+    name: "Shipmate Maintain — SaaS app",
+    description: MAINTAIN_DESCRIPTION,
+    unitAmount: 15000,
+    envVar: "STRIPE_PRICE_MAINTAIN_SAAS",
   },
 ] as const;
 

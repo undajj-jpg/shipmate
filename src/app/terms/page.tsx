@@ -36,10 +36,12 @@ export default function TermsPage() {
           deployments.
         </p>
         <p>
-          <strong>Maintain ($100/month)</strong> covers a finished product: hosting
-          management, monitoring, security patches, and bug fixes.{" "}
-          <strong>New features are not included</strong> on Maintain — switching back to
-          Build re-activates feature development.
+          <strong>Maintain</strong> covers a finished product: hosting management,
+          monitoring, security patches, and bug fixes. Its monthly rate depends on the
+          type of product being maintained — currently $50 for a landing page, $75 for a
+          website, $100 for an automation, and $150 for a SaaS application, reflecting
+          their different upkeep costs. <strong>New features are not included</strong> on
+          Maintain — switching back to Build re-activates feature development.
         </p>
         <p>
           You can switch between plans at any time from your billing screen. Switches take

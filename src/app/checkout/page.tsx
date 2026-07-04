@@ -1,11 +1,19 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { auth } from "@/auth";
 import { db } from "@/db";
 import { clients } from "@/db/schema";
-import Link from "next/link";
 import { startCheckout } from "@/lib/billing-actions";
-import { PLAN_DETAILS, type PaidPlan } from "@/lib/stripe";
+import { getClientBuildType } from "@/lib/client-plan";
+import {
+  PLAN_COPY,
+  BUILD_TYPE_LABELS,
+  planPriceLabel,
+  money,
+  planPriceCents,
+  type PaidPlan,
+} from "@/lib/plans";
 import { COST_POLICY_LABEL } from "@/lib/legal";
 
 export default async function CheckoutPage({
@@ -30,8 +38,10 @@ export default async function CheckoutPage({
 
   const params = await searchParams;
   const plan: PaidPlan = params.plan === "maintain" ? "maintain" : "build";
-  const details = PLAN_DETAILS[plan];
+  const buildType = await getClientBuildType(client.id);
+  const copy = PLAN_COPY[plan];
   const other: PaidPlan = plan === "build" ? "maintain" : "build";
+  const priceLabel = planPriceLabel(plan, buildType);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-6">
@@ -43,13 +53,18 @@ export default async function CheckoutPage({
         )}
         <div className="rounded-2xl border border-hairline bg-white p-8">
           <div className="mb-1 font-mono text-[13px] uppercase tracking-[0.08em] text-muted-ink">
-            {details.name} plan
+            {copy.name} plan
+            {plan === "maintain" && ` · ${BUILD_TYPE_LABELS[buildType]}`}
           </div>
           <div className="font-display text-4xl font-bold tracking-[-0.03em] text-ink">
-            {details.amountLabel.split("/")[0]}
+            {money(planPriceCents(plan, buildType))}
             <span className="font-body text-base font-medium text-muted-ink"> /month</span>
           </div>
-          <p className="mb-4 mt-3 text-[15px] text-muted-ink">{details.description}</p>
+          <p className="mb-4 mt-3 text-[15px] text-muted-ink">
+            {copy.description}
+            {plan === "maintain" &&
+              ` Your rate reflects maintaining a ${BUILD_TYPE_LABELS[buildType].toLowerCase()}.`}
+          </p>
 
           <p className="mb-5 rounded-lg bg-background px-3.5 py-2.5 font-mono text-[12.5px] leading-relaxed text-muted-ink">
             + hosting &amp; AI usage, billed at cost (typically $5–50/mo). Itemized on
@@ -86,7 +101,7 @@ export default async function CheckoutPage({
               type="submit"
               className="w-full rounded-[10px] bg-ink px-5 py-3 text-[15px] font-semibold text-white transition hover:-translate-y-px hover:shadow-[0_6px_18px_rgba(16,24,43,0.18)]"
             >
-              Continue to payment — {details.amountLabel}
+              Continue to payment — {priceLabel}
             </button>
           </form>
 
@@ -96,7 +111,7 @@ export default async function CheckoutPage({
               href={`/checkout?plan=${other}`}
               className="font-medium text-ink underline underline-offset-2"
             >
-              Choose {PLAN_DETAILS[other].name} instead
+              Choose {PLAN_COPY[other].name} instead ({planPriceLabel(other, buildType)})
             </a>
           </p>
         </div>

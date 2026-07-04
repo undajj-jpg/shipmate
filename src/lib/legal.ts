@@ -1,5 +1,5 @@
 /** Bump when the Terms or the cost-policy wording changes materially. */
-export const TERMS_VERSION = "2026-07-04.v1";
+export const TERMS_VERSION = "2026-07-04.v2";
 
 export const TERMS_LAST_UPDATED = "July 4, 2026";
 

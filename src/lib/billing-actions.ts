@@ -9,6 +9,7 @@ import { auth } from "@/auth";
 import { db } from "@/db";
 import { clients, type Client } from "@/db/schema";
 import { stripe, priceIdForPlan, type PaidPlan } from "@/lib/stripe";
+import { getClientBuildType } from "@/lib/client-plan";
 import { TERMS_VERSION } from "@/lib/legal";
 import { env } from "@/env";
 
@@ -78,11 +79,12 @@ export async function startCheckout(formData: FormData) {
     .where(eq(clients.id, client.id));
 
   const customerId = await getOrCreateStripeCustomer(client, session.user.email);
+  const buildType = await getClientBuildType(client.id);
 
   const checkout = await stripe.checkout.sessions.create({
     mode: "subscription",
     customer: customerId,
-    line_items: [{ price: priceIdForPlan(plan), quantity: 1 }],
+    line_items: [{ price: priceIdForPlan(plan, buildType), quantity: 1 }],
     success_url: appUrl("/checkout/success?session_id={CHECKOUT_SESSION_ID}"),
     cancel_url: appUrl(`/checkout?plan=${plan}&canceled=1`),
     client_reference_id: client.id,
@@ -111,6 +113,7 @@ export async function switchPlan() {
   }
 
   const targetPlan: PaidPlan = client.plan === "build" ? "maintain" : "build";
+  const buildType = await getClientBuildType(client.id);
 
   const subscription = await stripe.subscriptions.retrieve(client.stripeSubscriptionId);
   const currentItem: Stripe.SubscriptionItem | undefined = subscription.items.data[0];
@@ -119,7 +122,7 @@ export async function switchPlan() {
   }
 
   await stripe.subscriptions.update(subscription.id, {
-    items: [{ id: currentItem.id, price: priceIdForPlan(targetPlan) }],
+    items: [{ id: currentItem.id, price: priceIdForPlan(targetPlan, buildType) }],
     proration_behavior: "create_prorations",
   });
 

@@ -15,6 +15,20 @@
       "when": 1783127997906,
       "tag": "0001_whole_skreet",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1783128839693,
+      "tag": "0002_married_zodiak",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1783129156414,
+      "tag": "0003_nosy_santa_claus",
+      "breakpoints": true
     }
   ]
 }

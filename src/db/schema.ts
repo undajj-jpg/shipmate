@@ -26,6 +26,12 @@ export const projectStatusEnum = pgEnum("project_status", [
   "maintained",
   "archived",
 ]);
+export const buildTypeEnum = pgEnum("build_type", [
+  "site",
+  "landing_page",
+  "saas",
+  "automation",
+]);
 export const requestStatusEnum = pgEnum("request_status", [
   "queued",
   "active",
@@ -33,6 +39,7 @@ export const requestStatusEnum = pgEnum("request_status", [
   "shipped",
   "archived",
 ]);
+export const requestKindEnum = pgEnum("request_kind", ["feature", "bug"]);
 export const messageTypeEnum = pgEnum("message_type", ["text", "system", "deploy"]);
 export const deploymentStateEnum = pgEnum("deployment_state", [
   "building",
@@ -153,6 +160,7 @@ export const projects = pgTable("projects", {
     .references(() => clients.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   description: text("description"),
+  buildType: buildTypeEnum("build_type").notNull().default("site"),
   repoUrl: text("repo_url"),
   vercelProjectId: text("vercel_project_id"),
   productionUrl: text("production_url"),
@@ -167,6 +175,7 @@ export const requests = pgTable("requests", {
     .references(() => projects.id, { onDelete: "cascade" }),
   title: text("title").notNull(),
   description: text("description"),
+  kind: requestKindEnum("kind").notNull().default("feature"),
   status: requestStatusEnum("status").notNull().default("queued"),
   position: integer("position").notNull().default(0),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
@@ -223,6 +232,16 @@ export const subscriptionEvents = pgTable(
   },
   (table) => [uniqueIndex("subscription_events_stripe_id_idx").on(table.stripeEventId)]
 );
+
+/** Throttle log for outbound notification emails (e.g. max 1/hour per user). */
+export const emailLog = pgTable("email_log", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  type: text("type").notNull(),
+  sentAt: timestamp("sent_at", { withTimezone: true }).notNull().defaultNow(),
+});
 
 export const usersRelations = relations(users, ({ one, many }) => ({
   client: one(clients, {

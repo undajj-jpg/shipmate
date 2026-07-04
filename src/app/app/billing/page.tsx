@@ -4,7 +4,8 @@ import { db } from "@/db";
 import { passthroughCharges, type PassthroughCharge } from "@/db/schema";
 import { getClientContext, hasActivePlan } from "@/lib/guards";
 import { switchPlan, openBillingPortal } from "@/lib/billing-actions";
-import { PLAN_DETAILS, type PaidPlan } from "@/lib/stripe";
+import { getClientBuildType } from "@/lib/client-plan";
+import { PLAN_COPY, planPriceLabel, type PaidPlan } from "@/lib/plans";
 import { cn } from "@/lib/utils";
 
 const CATEGORY_LABELS: Record<PassthroughCharge["category"], string> = {
@@ -32,7 +33,7 @@ export default async function BillingPage() {
   }
 
   const plan: PaidPlan = client.plan === "maintain" ? "maintain" : "build";
-  const details = PLAN_DETAILS[plan];
+  const buildType = await getClientBuildType(client.id);
   const otherPlan: PaidPlan = plan === "build" ? "maintain" : "build";
 
   const charges = await db.query.passthroughCharges.findMany({
@@ -54,8 +55,8 @@ export default async function BillingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background px-6 py-12">
-      <div className="mx-auto max-w-2xl space-y-6">
+    <div>
+      <div className="max-w-2xl space-y-6">
         <h1 className="font-display text-2xl font-semibold tracking-[-0.02em] text-ink">
           Billing
         </h1>
@@ -66,11 +67,11 @@ export default async function BillingPage() {
             <div>
               <div className="mb-1 flex items-center gap-2">
                 <span className="rounded-md bg-green-tint px-2 py-0.5 font-mono text-xs text-green">
-                  {details.name} · {client.planStatus}
+                  {PLAN_COPY[plan].name} · {client.planStatus}
                 </span>
               </div>
               <div className="font-display text-2xl font-bold tracking-[-0.02em] text-ink">
-                {details.amountLabel}
+                {planPriceLabel(plan, buildType)}
                 <span className="ml-2 font-mono text-xs font-normal text-muted-ink">
                   + infra at cost
                 </span>
@@ -91,8 +92,8 @@ export default async function BillingPage() {
                 type="submit"
                 className="rounded-[10px] bg-ink px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-px hover:shadow-[0_6px_18px_rgba(16,24,43,0.18)]"
               >
-                Switch to {PLAN_DETAILS[otherPlan].name} —{" "}
-                {PLAN_DETAILS[otherPlan].amountLabel}
+                Switch to {PLAN_COPY[otherPlan].name} —{" "}
+                {planPriceLabel(otherPlan, buildType)}
               </button>
             </form>
             <p className="mt-2.5 text-[13px] text-muted-ink">

@@ -17,7 +17,7 @@ const FAQS = [
   },
   {
     q: "What happens when I switch to Maintain?",
-    a: "Your product stays live, monitored, and patched for $100/month. Bug fixes are included; new features aren't. Whenever you want to build again, switch back to Build and your same developer picks up where you left off.",
+    a: "Your product stays live, monitored, and patched for a monthly rate based on what we're maintaining — $50 for a landing page, $75 for a website, $100 for an automation, $150 for a SaaS app. Bug fixes are included; new features aren't. Whenever you want to build again, switch back to Build and your same developer picks up where you left off.",
   },
   {
     q: "Can I really cancel anytime?",

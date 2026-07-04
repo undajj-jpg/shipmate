@@ -21,8 +21,9 @@ const PLANS = [
   {
     id: "maintain",
     name: "Maintain",
-    price: "$100",
-    description: "Done building? Keep your product fast, secure, and online.",
+    price: "from $50",
+    description:
+      "Done building? Keep your product fast, secure, and online. Priced by what we maintain.",
     features: [
       "Hosting, monitoring & uptime",
       "Security patches & updates",
@@ -33,6 +34,13 @@ const PLANS = [
     cta: "Choose Maintain",
     featured: false,
   },
+];
+
+const MAINTAIN_TIER_ROWS = [
+  { label: "Landing page", price: "$50/mo" },
+  { label: "Website", price: "$75/mo" },
+  { label: "Automation", price: "$100/mo" },
+  { label: "SaaS app", price: "$150/mo" },
 ];
 
 export function Pricing() {
@@ -66,6 +74,16 @@ export function Pricing() {
               <span className="font-body text-base font-medium text-muted-ink"> /month</span>
             </div>
             <p className="mb-5.5 mt-3 text-[15.5px] text-muted-ink">{plan.description}</p>
+            {plan.id === "maintain" && (
+              <div className="mb-5 rounded-lg bg-background px-3.5 py-2.5 font-mono text-[12.5px] leading-relaxed">
+                {MAINTAIN_TIER_ROWS.map((t) => (
+                  <div key={t.label} className="flex justify-between py-0.5">
+                    <span className="text-muted-ink">{t.label}</span>
+                    <span className="text-ink">{t.price}</span>
+                  </div>
+                ))}
+              </div>
+            )}
             <ul className="mb-4 flex-1">
               {plan.features.map((f, i) => (
                 <li

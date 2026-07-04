@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import { auth } from "@/auth";
 import { db } from "@/db";
 import { clients, projects } from "@/db/schema";
+import { BUILD_TYPE_LABELS } from "@/lib/plans";
 
 const onboardingSchema = z.object({
   companyName: z.string().min(1, "Company name is required").max(200),
@@ -13,13 +14,6 @@ const onboardingSchema = z.object({
   description: z.string().min(1, "Tell us a bit about what you want built").max(2000),
   plan: z.enum(["build", "maintain"]).optional(),
 });
-
-const BUILD_TYPE_LABELS: Record<string, string> = {
-  site: "Website",
-  landing_page: "Landing page",
-  saas: "SaaS product",
-  automation: "Automation",
-};
 
 export async function completeOnboarding(formData: FormData) {
   const session = await auth();
@@ -59,6 +53,7 @@ export async function completeOnboarding(formData: FormData) {
     clientId,
     name: BUILD_TYPE_LABELS[buildType],
     description,
+    buildType,
     status: "onboarding",
   });
 
