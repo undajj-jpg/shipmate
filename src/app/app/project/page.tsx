@@ -4,6 +4,7 @@ import { deployments, projects } from "@/db/schema";
 import { getClientContext } from "@/lib/guards";
 import { BUILD_TYPE_LABELS } from "@/lib/plans";
 import { DeploymentList } from "@/components/deployments/deployment-list";
+import { refreshDeployments } from "@/lib/deployment-actions";
 
 export default async function ProjectPage() {
   const { client } = await getClientContext();
@@ -124,9 +125,22 @@ export default async function ProjectPage() {
       )}
 
       <div>
-        <h2 className="mb-2.5 font-mono text-xs uppercase tracking-[0.08em] text-muted-ink">
-          Deployment history
-        </h2>
+        <div className="mb-2.5 flex items-center justify-between">
+          <h2 className="font-mono text-xs uppercase tracking-[0.08em] text-muted-ink">
+            Deployment history
+          </h2>
+          {project.vercelProjectId && (
+            <form action={refreshDeployments}>
+              <input type="hidden" name="projectId" value={project.id} />
+              <button
+                type="submit"
+                className="rounded-lg border border-hairline px-2.5 py-1 font-mono text-[11px] text-muted-ink transition hover:border-ink hover:text-ink"
+              >
+                ↻ Refresh from Vercel
+              </button>
+            </form>
+          )}
+        </div>
         <DeploymentList
           deployments={deploys.map((d) => ({
             id: d.id,

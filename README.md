@@ -120,6 +120,10 @@ invoice line items:
    `deployment.succeeded`, and `deployment.error` events. Set the signing secret as
    `VERCEL_WEBHOOK_SECRET` — the route verifies the `x-vercel-signature` header against
    it before processing.
+4. Successful/failed deploys are upserted into `deployments` (unique on the Vercel
+   deployment id) and post a `deploy` card into the project chat exactly once per state
+   transition. If webhooks were registered late, the project screen's
+   **↻ Refresh from Vercel** button backfills via `GET /v6/deployments?projectId=…`.
 
 ## Project structure
 
