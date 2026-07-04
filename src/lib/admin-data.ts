@@ -1,4 +1,4 @@
-import { and, count, desc, eq, gte, isNotNull, sql } from "drizzle-orm";
+import { and, count, desc, eq, gte, inArray, isNotNull, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { clients, deployments, projects, requests, users } from "@/db/schema";
 import {
@@ -136,8 +136,8 @@ export async function getDevelopers(): Promise<DeveloperRow[]> {
         .from(requests)
         .where(
           and(
-            sql`${requests.projectId} = any(${projectIds})`,
-            sql`${requests.status} in ('queued','active','in_review')`
+            inArray(requests.projectId, projectIds),
+            inArray(requests.status, ["queued", "active", "in_review"])
           )
         );
       openRequests = value;
@@ -176,7 +176,7 @@ export async function getActiveRequests(): Promise<AdminActiveRequest[]> {
     .from(requests)
     .innerJoin(projects, eq(requests.projectId, projects.id))
     .innerJoin(clients, eq(projects.clientId, clients.id))
-    .where(sql`${requests.status} in ('active','in_review')`)
+    .where(inArray(requests.status, ["active", "in_review"]))
     .orderBy(requests.createdAt);
 
   const now = Date.now();
