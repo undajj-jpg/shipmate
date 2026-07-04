@@ -48,8 +48,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const dbUser = await db.query.users.findFirst({
           where: eq(users.id, user.id),
         });
+        let role = dbUser?.role ?? "client";
+
+        // Bootstrap: emails listed in ADMIN_EMAILS become admins on sign-in.
+        const adminEmails = env.ADMIN_EMAILS.split(",")
+          .map((e) => e.trim().toLowerCase())
+          .filter(Boolean);
+        if (
+          role !== "admin" &&
+          dbUser?.email &&
+          adminEmails.includes(dbUser.email.toLowerCase())
+        ) {
+          await db.update(users).set({ role: "admin" }).where(eq(users.id, user.id));
+          role = "admin";
+        }
+
         session.user.id = user.id;
-        session.user.role = dbUser?.role ?? "client";
+        session.user.role = role;
       }
       return session;
     },

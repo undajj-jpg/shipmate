@@ -35,6 +35,9 @@ const envSchema = z.object({
   /** Alert admin when a client's monthly infra pass-through total exceeds this. */
   INFRA_ALERT_THRESHOLD_CENTS: z.coerce.number().int().positive().default(10000),
 
+  /** Comma-separated emails that are auto-promoted to admin on sign-in. */
+  ADMIN_EMAILS: z.string().default(""),
+
   NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
 
   // Client-side Supabase Realtime (chat). Optional: chat falls back to
