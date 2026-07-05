@@ -5,7 +5,7 @@ developer (working with AI) who builds their site, landing page, SaaS, or automa
 chatting inside the platform and watching changes deploy to production on Vercel in real
 time.
 
-- **Build — $500/mo**: active development, unlimited requests (one active at a time), direct chat, deploys to Vercel.
+- **Build — $1,499/mo**: active development, unlimited requests (one active at a time), direct chat, deploys to Vercel.
 - **Maintain — from $49/mo**: hosting/monitoring, security patches, bug fixes. No new
   features. Priced by product type: landing page $49 · website $69 · automation $99 ·
   SaaS $399 (see `src/lib/plans.ts`).

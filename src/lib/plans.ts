@@ -14,7 +14,7 @@ export const BUILD_TYPE_LABELS: Record<BuildType, string> = {
   automation: "Automation",
 };
 
-export const BUILD_PRICE_CENTS = 50000;
+export const BUILD_PRICE_CENTS = 149900;
 
 export const MAINTAIN_PRICE_CENTS: Record<BuildType, number> = {
   landing_page: 4900,
@@ -26,7 +26,13 @@ export const MAINTAIN_PRICE_CENTS: Record<BuildType, number> = {
 export const MAINTAIN_FROM_CENTS = Math.min(...Object.values(MAINTAIN_PRICE_CENTS));
 
 export function money(cents: number): string {
-  return cents % 100 === 0 ? `$${cents / 100}` : `$${(cents / 100).toFixed(2)}`;
+  const dollars = cents / 100;
+  return cents % 100 === 0
+    ? `$${dollars.toLocaleString("en-US")}`
+    : `$${dollars.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`;
 }
 
 export function planPriceCents(plan: PaidPlan, buildType: BuildType): number {

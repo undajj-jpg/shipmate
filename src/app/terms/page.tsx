@@ -31,7 +31,7 @@ export default function TermsPage() {
 
       <LegalSection title="2. Plans and switching">
         <p>
-          <strong>Build ($500/month)</strong> covers active development: unlimited queued
+          <strong>Build ($1,499/month)</strong> covers active development: unlimited queued
           requests (one active at a time), direct chat with your developer, and production
           deployments.
         </p>

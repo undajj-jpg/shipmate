@@ -32,7 +32,7 @@ export function Hero() {
               href="/signup?plan=build"
               className="group relative overflow-hidden rounded-[12px] bg-ink px-6 py-3.5 text-[15px] font-semibold text-white shadow-[0_10px_30px_-10px_rgba(16,24,43,0.5)] transition hover:-translate-y-0.5"
             >
-              <span className="relative z-10">Start building — $500/mo</span>
+              <span className="relative z-10">Start building — $1,499/mo</span>
               <span className="absolute inset-0 -z-0 bg-gradient-to-r from-green via-blue to-violet opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </Link>
             <Link

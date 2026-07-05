@@ -6,7 +6,7 @@ const PLANS = [
   {
     id: "build",
     name: "Build",
-    price: "$500",
+    price: "$1,499",
     description: "Active development. Your dedicated developer + AI, shipping continuously.",
     features: [
       "Hosting, domain & deploys set up for you — live from day one",

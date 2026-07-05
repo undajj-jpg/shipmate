@@ -27,7 +27,7 @@ const PLANS = [
     name: "Shipmate Build",
     description:
       "Active development: a dedicated developer + AI, unlimited requests (one active at a time), direct chat, production deploys on Vercel.",
-    unitAmount: 50000,
+    unitAmount: 149900,
     envVar: "STRIPE_PRICE_BUILD",
   },
   {

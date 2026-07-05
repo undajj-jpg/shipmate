@@ -21,7 +21,7 @@ export function CTABand() {
             href="/signup?plan=build"
             className="group relative inline-flex items-center gap-2 overflow-hidden rounded-[12px] bg-green px-7 py-3.5 text-[15px] font-semibold text-[#06271A] shadow-[0_10px_30px_-8px_rgba(15,169,104,0.6)] transition hover:-translate-y-0.5"
           >
-            <span className="relative z-10">Start building — $500/mo</span>
+            <span className="relative z-10">Start building — $1,499/mo</span>
             <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">
               →
             </span>
