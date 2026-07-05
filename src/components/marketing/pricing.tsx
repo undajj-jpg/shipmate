@@ -9,10 +9,10 @@ const PLANS = [
     price: "$500",
     description: "Active development. Your dedicated developer + AI, shipping continuously.",
     features: [
+      "Hosting, domain & deploys set up for you — live from day one",
       "Unlimited requests, one at a time",
       "Direct chat with your developer",
       "Average 48-hour turnaround",
-      "Deploys to production on Vercel",
       "You own 100% of the code",
       "Switch or cancel anytime",
     ],
@@ -112,7 +112,9 @@ export function Pricing() {
               ))}
             </ul>
             <p className="mb-6 font-mono text-[12.5px] leading-relaxed text-muted-ink">
-              + hosting &amp; AI usage, billed at cost (typically $5–50/mo)
+              Setup of hosting &amp; infrastructure is included. Provider usage costs
+              (hosting beyond Vercel&apos;s free tier, AI usage) are passed through at
+              cost — often $0 to start, typically $5–50/mo as you grow.
             </p>
             <Link
               href={`/signup?plan=${plan.id}`}

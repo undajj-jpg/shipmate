@@ -13,7 +13,7 @@ const FAQS = [
   },
   {
     q: "Are hosting and AI costs included?",
-    a: "Your subscription covers the development service. Infrastructure — Vercel hosting, database, domain, AI usage — is billed separately at cost, with no markup, because it varies with each product's traffic and usage. Typical small projects run $5–50/month. You see an itemized breakdown on every invoice and can check current usage anytime in your billing screen.",
+    a: "We set up everything — hosting, domain, database, deploys — so your product runs from day one; that work is part of your subscription. What's not included are the providers' own usage costs: hosting beyond Vercel's free tier, database, domain renewal, and AI usage. Those are passed through at cost with no markup, because they vary with your traffic. Many small projects start at $0 on free tiers; typical projects run $5–50/month. Every charge is itemized on your invoice, and you can check the running total anytime in your billing screen.",
   },
   {
     q: "What happens when I switch to Maintain?",

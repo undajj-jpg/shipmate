@@ -111,7 +111,9 @@ export default async function BillingPage() {
           </h2>
           <p className="mt-1 text-sm text-muted-ink">
             These are your product&apos;s real infrastructure costs (hosting, AI usage,
-            domain). We pass them through at cost — no markup.
+            domain). We pass them through at cost — no markup. Setup and configuration
+            are always included in your plan; while your usage fits the providers&apos;
+            free tiers, this section simply stays at $0.
           </p>
 
           <div className="mt-5">

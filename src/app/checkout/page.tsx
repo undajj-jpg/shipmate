@@ -67,8 +67,10 @@ export default async function CheckoutPage({
           </p>
 
           <p className="mb-5 rounded-lg bg-background px-3.5 py-2.5 font-mono text-[12.5px] leading-relaxed text-muted-ink">
-            + hosting &amp; AI usage, billed at cost (typically $5–50/mo). Itemized on
-            every invoice, no markup.
+            Setup of hosting &amp; infrastructure is included — your product runs from
+            day one. Provider usage costs (hosting beyond Vercel&apos;s free tier, AI
+            usage) are passed through at cost: often $0 to start, typically $5–50/mo as
+            you grow. Itemized on every invoice, no markup.
           </p>
 
           {params.error === "cost-policy" && (

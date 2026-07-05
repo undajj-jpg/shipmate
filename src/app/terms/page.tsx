@@ -51,13 +51,21 @@ export default function TermsPage() {
 
       <LegalSection title="3. Third-party infrastructure costs">
         <p>
-          Your subscription covers the development service only.{" "}
+          <strong>Setup is included; usage is passed through.</strong> Shipmate sets up
+          and configures all infrastructure your product needs — hosting, deployments,
+          database, domain, email — as part of your subscription, so your product runs
+          from day one at no extra service fee. Where providers offer free tiers (for
+          example Vercel&apos;s), your infrastructure cost is simply $0 until your usage
+          outgrows them.
+        </p>
+        <p>
+          However,{" "}
           <strong>
-            Third-party infrastructure costs are not included in your plan price.
+            the providers&apos; own usage costs are not included in your plan price.
           </strong>{" "}
-          These include, without limitation: hosting (e.g. Vercel), databases (e.g.
-          Supabase), domain registrations and renewals, transactional email services, and
-          AI API usage attributable to your product.
+          These include, without limitation: hosting beyond free-tier limits (e.g.
+          Vercel), databases (e.g. Supabase), domain registrations and renewals,
+          transactional email services, and AI API usage attributable to your product.
         </p>
         <p>
           These costs are variable — they depend on your product&apos;s traffic, data, and
