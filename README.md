@@ -6,8 +6,8 @@ chatting inside the platform and watching changes deploy to production on Vercel
 time.
 
 - **Build — $500/mo**: active development, unlimited requests (one active at a time), direct chat, deploys to Vercel.
-- **Maintain — from $50/mo**: hosting/monitoring, security patches, bug fixes. No new
-  features. Priced by product type: landing page $50 · website $75 · automation $100 ·
+- **Maintain — from $49/mo**: hosting/monitoring, security patches, bug fixes. No new
+  features. Priced by product type: landing page $49 · website $69 · automation $99 ·
   SaaS $399 (see `src/lib/plans.ts`).
 
 Third-party infrastructure (hosting, database, domains, email, AI usage) is **not**

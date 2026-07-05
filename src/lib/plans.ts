@@ -17,9 +17,9 @@ export const BUILD_TYPE_LABELS: Record<BuildType, string> = {
 export const BUILD_PRICE_CENTS = 50000;
 
 export const MAINTAIN_PRICE_CENTS: Record<BuildType, number> = {
-  landing_page: 5000,
-  site: 7500,
-  automation: 10000,
+  landing_page: 4900,
+  site: 6900,
+  automation: 9900,
   saas: 39900,
 };
 

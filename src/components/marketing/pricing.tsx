@@ -22,7 +22,7 @@ const PLANS = [
   {
     id: "maintain",
     name: "Maintain",
-    price: "from $50",
+    price: "from $49",
     description:
       "Done building? Keep your product fast, secure, and online. Priced by what we maintain.",
     features: [
@@ -38,9 +38,9 @@ const PLANS = [
 ];
 
 const MAINTAIN_TIER_ROWS = [
-  { label: "Landing page", price: "$50/mo" },
-  { label: "Website", price: "$75/mo" },
-  { label: "Automation", price: "$100/mo" },
+  { label: "Landing page", price: "$49/mo" },
+  { label: "Website", price: "$69/mo" },
+  { label: "Automation", price: "$99/mo" },
   { label: "SaaS app", price: "$399/mo" },
 ];
 
