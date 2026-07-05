@@ -75,15 +75,16 @@ function ProductPreview() {
 }
 
 export function HeroFeed() {
-  const [shown, setShown] = useState(0);
+  // Server-renders with the FULL story visible so slow connections and
+  // no-JS visitors never see an empty panel; hydration restarts the loop.
+  const [shown, setShown] = useState(STEP_COUNT);
   const scrollRef = useRef<HTMLDivElement>(null);
   const reducedRef = useRef(false);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       reducedRef.current = true;
-      setShown(STEP_COUNT);
-      return;
+      return; // keep the complete story static
     }
     const timeouts: number[] = [];
     const run = () => {
@@ -102,20 +103,20 @@ export function HeroFeed() {
     };
   }, []);
 
-  const scrollToEnd = useCallback(() => {
+  const followLatest = useCallback((step: number) => {
     const el = scrollRef.current;
     if (!el) return;
+    // On loop reset jump back to the top; otherwise follow like a live chat.
     el.scrollTo({
-      top: el.scrollHeight,
-      behavior: reducedRef.current ? "auto" : "smooth",
+      top: step === 0 ? 0 : el.scrollHeight,
+      behavior: step === 0 || reducedRef.current ? "auto" : "smooth",
     });
   }, []);
 
   useEffect(() => {
-    // after the newest step renders, follow it like a live chat
-    const t = window.setTimeout(scrollToEnd, 60);
+    const t = window.setTimeout(() => followLatest(shown), 60);
     return () => window.clearTimeout(t);
-  }, [shown, scrollToEnd]);
+  }, [shown, followLatest]);
 
   const step = (i: number) =>
     cn(

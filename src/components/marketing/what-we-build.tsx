@@ -90,6 +90,7 @@ const CATEGORIES: {
   buildType: BuildType;
   chip: string;
   glow: string;
+  priceColor: string;
 }[] = [
   {
     tag: "web",
@@ -99,6 +100,7 @@ const CATEGORIES: {
     buildType: "site",
     chip: "bg-green-tint text-green",
     glow: "hover:shadow-[0_18px_40px_-18px_rgba(15,169,104,0.45)] hover:border-green/40",
+    priceColor: "text-green",
   },
   {
     tag: "launch",
@@ -108,6 +110,7 @@ const CATEGORIES: {
     buildType: "landing_page",
     chip: "bg-blue-tint text-blue",
     glow: "hover:shadow-[0_18px_40px_-18px_rgba(47,107,255,0.45)] hover:border-blue/40",
+    priceColor: "text-blue",
   },
   {
     tag: "product",
@@ -117,6 +120,7 @@ const CATEGORIES: {
     buildType: "saas",
     chip: "bg-violet-tint text-violet",
     glow: "hover:shadow-[0_18px_40px_-18px_rgba(109,92,231,0.45)] hover:border-violet/40",
+    priceColor: "text-violet",
   },
   {
     tag: "ops",
@@ -126,6 +130,7 @@ const CATEGORIES: {
     buildType: "automation",
     chip: "bg-amber-tint text-amber",
     glow: "hover:shadow-[0_18px_40px_-18px_rgba(245,150,10,0.45)] hover:border-amber/40",
+    priceColor: "text-amber",
   },
 ];
 
@@ -165,15 +170,32 @@ export function WhatWeBuild() {
                 {c.title}
               </h3>
               <p className="mb-3 text-[14.5px] leading-relaxed text-muted-ink">{c.body}</p>
-              <div className="border-t border-hairline pt-3 font-mono text-[11.5px] leading-relaxed text-muted-ink">
-                <div className="flex justify-between">
-                  <span>Build</span>
-                  <span className="text-ink">{money(BUILD_PRICE_CENTS)}/mo</span>
+              <div className="space-y-1.5 border-t border-hairline pt-3">
+                <div className="flex items-baseline justify-between">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.06em] text-muted-ink">
+                    Build
+                  </span>
+                  <span className="font-display text-[19px] font-bold tracking-[-0.01em] text-ink">
+                    {money(BUILD_PRICE_CENTS)}
+                    <span className="font-body text-[12px] font-medium text-muted-ink">
+                      /mo
+                    </span>
+                  </span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Maintain</span>
-                  <span className="text-ink">
-                    {money(MAINTAIN_PRICE_CENTS[c.buildType])}/mo
+                <div className="flex items-baseline justify-between">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.06em] text-muted-ink">
+                    Maintain
+                  </span>
+                  <span
+                    className={cn(
+                      "font-display text-[19px] font-bold tracking-[-0.01em]",
+                      c.priceColor
+                    )}
+                  >
+                    {money(MAINTAIN_PRICE_CENTS[c.buildType])}
+                    <span className="font-body text-[12px] font-medium text-muted-ink">
+                      /mo
+                    </span>
                   </span>
                 </div>
               </div>
