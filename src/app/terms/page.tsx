@@ -39,7 +39,7 @@ export default function TermsPage() {
           <strong>Maintain</strong> covers a finished product: hosting management,
           monitoring, security patches, and bug fixes. Its monthly rate depends on the
           type of product being maintained — currently $50 for a landing page, $75 for a
-          website, $100 for an automation, and $150 for a SaaS application, reflecting
+          website, $100 for an automation, and $399 for a SaaS application, reflecting
           their different upkeep costs. <strong>New features are not included</strong> on
           Maintain — switching back to Build re-activates feature development.
         </p>

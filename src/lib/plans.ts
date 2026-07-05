@@ -20,7 +20,7 @@ export const MAINTAIN_PRICE_CENTS: Record<BuildType, number> = {
   landing_page: 5000,
   site: 7500,
   automation: 10000,
-  saas: 15000,
+  saas: 39900,
 };
 
 export const MAINTAIN_FROM_CENTS = Math.min(...Object.values(MAINTAIN_PRICE_CENTS));

@@ -55,7 +55,7 @@ const PLANS = [
     lookupKey: "shipmate_maintain_saas",
     name: "Shipmate Maintain — SaaS app",
     description: MAINTAIN_DESCRIPTION,
-    unitAmount: 15000,
+    unitAmount: 39900,
     envVar: "STRIPE_PRICE_MAINTAIN_SAAS",
   },
 ] as const;

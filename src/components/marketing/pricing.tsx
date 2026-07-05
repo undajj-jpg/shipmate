@@ -41,7 +41,7 @@ const MAINTAIN_TIER_ROWS = [
   { label: "Landing page", price: "$50/mo" },
   { label: "Website", price: "$75/mo" },
   { label: "Automation", price: "$100/mo" },
-  { label: "SaaS app", price: "$150/mo" },
+  { label: "SaaS app", price: "$399/mo" },
 ];
 
 export function Pricing() {
