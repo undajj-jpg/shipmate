@@ -86,20 +86,26 @@ export function HeroFeed() {
       reducedRef.current = true;
       return; // keep the complete story static
     }
-    const timeouts: number[] = [];
-    const run = () => {
-      setShown(0);
-      for (let i = 0; i < STEP_COUNT; i++) {
-        timeouts.push(
-          window.setTimeout(() => setShown(i + 1), FIRST_DELAY_MS + i * STAGGER_MS)
-        );
-      }
+
+    // Timestamp-driven: the visible step is a pure function of elapsed
+    // time, so background-tab timer throttling can never strand the panel
+    // in an empty state — the next tick (or tab refocus) recomputes it.
+    const start = Date.now();
+    const compute = () => {
+      const t = (Date.now() - start) % LOOP_MS;
+      const step =
+        t < FIRST_DELAY_MS
+          ? 0
+          : Math.min(STEP_COUNT, Math.floor((t - FIRST_DELAY_MS) / STAGGER_MS) + 1);
+      setShown(step);
     };
-    run();
-    const interval = window.setInterval(run, LOOP_MS);
+
+    compute();
+    const interval = window.setInterval(compute, 250);
+    document.addEventListener("visibilitychange", compute);
     return () => {
       window.clearInterval(interval);
-      timeouts.forEach((t) => window.clearTimeout(t));
+      document.removeEventListener("visibilitychange", compute);
     };
   }, []);
 
