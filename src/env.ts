@@ -38,6 +38,12 @@ const envSchema = z.object({
   /** Comma-separated emails that are auto-promoted to admin on sign-in. */
   ADMIN_EMAILS: z.string().default(""),
 
+  /**
+   * Bootstrap password login for admins at /admin-login. Only active while
+   * set; unset it once magic-link/Google auth is configured.
+   */
+  ADMIN_PASSWORD: z.string().min(16).optional(),
+
   NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
 
   // Client-side Supabase Realtime (chat). Optional: chat falls back to
